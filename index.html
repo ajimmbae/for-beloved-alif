@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>for you</title>
+
 <style>
 body{
   margin:0;
@@ -16,32 +17,33 @@ body{
 
 /* envelope */
 #envelope{
-  font-size:80px;
+  font-size:70px;
   cursor:pointer;
-  animation:shake 2s infinite;
   text-align:center;
+  animation:shake 2s infinite;
 }
 
 @keyframes shake{
-  0%{transform:rotate(0deg);}
+  0%{transform:rotate(0);}
   25%{transform:rotate(2deg);}
   50%{transform:rotate(-2deg);}
   75%{transform:rotate(2deg);}
-  100%{transform:rotate(0deg);}
+  100%{transform:rotate(0);}
 }
 
 /* paper */
 #paper{
   display:none;
   position:absolute;
-  width:80%;
-  max-width:400px;
+  width:85%;
+  max-width:420px;
   background:white;
   padding:20px;
-  border-radius:10px;
+  border-radius:15px;
   text-align:center;
   box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  animation:pop 0.8s forwards;
+  animation:pop 0.8s ease;
+  z-index:2;
 }
 
 @keyframes pop{
@@ -49,9 +51,27 @@ body{
   to{transform:scale(1);opacity:1;}
 }
 
+h3{
+  margin-bottom:10px;
+}
+
+/* hearts */
+.heart{
+  position:absolute;
+  color:pink;
+  font-size:18px;
+  animation:fall 4s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes fall{
+  0%{transform:translateY(-10vh);opacity:1;}
+  100%{transform:translateY(110vh);opacity:0;}
+}
+
 img{
-  width:120px;
-  margin:10px;
+  width:110px;
+  margin:5px;
 }
 </style>
 </head>
@@ -64,8 +84,9 @@ img{
 </div>
 
 <div id="paper">
+  <h3>For my baby . Alif Rayyan ~ 💗</h3>
+
   <img src="https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif">
-  <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
 
   <h3 id="text"></h3>
 </div>
@@ -75,10 +96,11 @@ function openLetter(){
   document.getElementById("envelope").style.display="none";
   document.getElementById("paper").style.display="block";
   typeWriter();
+  setInterval(createHeart,200);
 }
 
-let msg = ` for my baby , Aliff 
-hi sayanggggg , bf u ni :3 !
+/* typing text */
+let msg = `hi sayanggggg , bf u ni :3 !
 i belajar coding tauu untuk baby hehehe .
 bukan senangg tauu :< .
 okayylahh tu jee , i just nak you tau yang link ni ajim you yang buatt mwhahah !
@@ -89,17 +111,29 @@ byeeee`;
 
 let i=0;
 function typeWriter(){
-  let text = document.getElementById("text");
-  let speed = 40;
+  let text=document.getElementById("text");
+  let speed=40;
 
   function typing(){
-    if(i < msg.length){
-      text.innerHTML += msg.charAt(i);
+    if(i<msg.length){
+      text.innerHTML+=msg.charAt(i);
       i++;
-      setTimeout(typing, speed);
+      setTimeout(typing,speed);
     }
   }
   typing();
+}
+
+/* heart rain */
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML="❤";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(10+Math.random()*20)+"px";
+  document.body.appendChild(heart);
+
+  setTimeout(()=>heart.remove(),4000);
 }
 </script>
 
