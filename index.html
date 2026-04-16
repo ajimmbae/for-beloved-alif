@@ -10,16 +10,17 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#ffe6eb;
+  flex-direction:column;
   font-family:sans-serif;
+  background:#ffe6eb;
   overflow:hidden;
+  text-align:center;
 }
 
-/* envelope */
+/* envelope + paper */
 #envelope{
   font-size:70px;
   cursor:pointer;
-  text-align:center;
   animation:shake 2s infinite;
 }
 
@@ -31,35 +32,21 @@ body{
   100%{transform:rotate(0);}
 }
 
-/* paper */
-#paper{
+#paper, #page2{
   display:none;
-  position:absolute;
   width:85%;
   max-width:420px;
   background:white;
   padding:20px;
   border-radius:15px;
-  text-align:center;
   box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  animation:pop 0.8s ease;
-  z-index:2;
-}
-
-@keyframes pop{
-  from{transform:scale(0.3);opacity:0;}
-  to{transform:scale(1);opacity:1;}
-}
-
-h3{
-  margin-bottom:10px;
+  position:relative;
 }
 
 /* hearts */
 .heart{
   position:absolute;
   color:pink;
-  font-size:18px;
   animation:fall 4s linear infinite;
   pointer-events:none;
 }
@@ -69,38 +56,74 @@ h3{
   100%{transform:translateY(110vh);opacity:0;}
 }
 
-img{
-  width:110px;
-  margin:5px;
+/* Ronaldo jump scare */
+#ronaldo{
+  position:fixed;
+  top:-200px;
+  left:50%;
+  transform:translateX(-50%);
+  width:180px;
+  transition:0.5s;
+  z-index:999;
+}
+
+/* football buttons */
+.ballBtn{
+  border-radius:50%;
+  width:90px;
+  height:90px;
+  border:none;
+  margin:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* shake effect */
+.shake{
+  animation:shake2 0.3s infinite;
+}
+
+@keyframes shake2{
+  0%{transform:translateX(0);}
+  50%{transform:translateX(5px);}
+  100%{transform:translateX(-5px);}
 }
 </style>
 </head>
 
 <body>
 
+<!-- STEP 1 -->
 <div id="envelope" onclick="openLetter()">
-📩<br>
-<button>open</button>
+📩<br><button>open</button>
 </div>
 
 <div id="paper">
   <h3>For my baby . Alif Rayyan ~ 💗</h3>
 
-  <img src="https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" width="140" style="border-radius:10px;">
 
   <h3 id="text"></h3>
+
+  <button onclick="goPage2()">continue</button>
+</div>
+
+<!-- RONALDO JUMPSCARE -->
+<img id="ronaldo"
+src="https://media.tenor.com/jH0V4V6y9fQAAAAC/ronaldo-siu.gif">
+
+<!-- PAGE 2 -->
+<div id="page2">
+  <h2 id="msg2"></h2>
+
+  <button class="ballBtn" onclick="accept()">ACCEPT ⚽</button>
+  <button class="ballBtn" id="ignoreBtn" onmouseover="runAway()">IGNORE ⚽</button>
 </div>
 
 <script>
-function openLetter(){
-  document.getElementById("envelope").style.display="none";
-  document.getElementById("paper").style.display="block";
-  typeWriter();
-  setInterval(createHeart,200);
-}
 
-/* typing text */
-let msg = `hi sayanggggg , bf u ni :3 !
+let i=0;
+let msg=`hi sayanggggg , bf u ni :3 !
 i belajar coding tauu untuk baby hehehe .
 bukan senangg tauu :< .
 okayylahh tu jee , i just nak you tau yang link ni ajim you yang buatt mwhahah !
@@ -109,33 +132,66 @@ i baru belajar hehee .
 okaylahh pape tekan bawah .
 byeeee`;
 
-let i=0;
+function openLetter(){
+  document.getElementById("envelope").style.display="none";
+  document.getElementById("paper").style.display="block";
+  typeWriter();
+  setInterval(createHeart,200);
+}
+
 function typeWriter(){
   let text=document.getElementById("text");
-  let speed=40;
-
   function typing(){
     if(i<msg.length){
       text.innerHTML+=msg.charAt(i);
       i++;
-      setTimeout(typing,speed);
+      setTimeout(typing,40);
     }
   }
   typing();
 }
 
-/* heart rain */
-function createHeart(){
-  const heart=document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML="❤";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=(10+Math.random()*20)+"px";
-  document.body.appendChild(heart);
+function goPage2(){
+  document.getElementById("paper").style.display="none";
+  document.getElementById("page2").style.display="block";
 
-  setTimeout(()=>heart.remove(),4000);
+  // Ronaldo jump scare
+  let r=document.getElementById("ronaldo");
+  r.style.top="20px";
+
+  setTimeout(()=>{
+    r.style.top="-200px";
+  },1500);
+
+  document.getElementById("msg2").innerHTML=
+  "i minta maaf yee sayangg , i dah taknak buat dahh . i promise hati ke hati okayy :3 <br><br> you maafkan i tak ?";
 }
-</script>
 
-</body>
-</html>
+function accept(){
+  document.getElementById("page2").innerHTML=`
+    <h1>yayyy thank you ❤️</h1>
+    <p>i will take care of you better next time</p>
+  `;
+}
+
+function runAway(){
+  let btn=document.getElementById("ignoreBtn");
+  btn.style.position="absolute";
+  btn.style.left=Math.random()*80+"vw";
+  btn.style.top=Math.random()*70+"vh";
+
+  // Ronaldo cry effect
+  document.getElementById("ronaldo").src =
+  "https://media.tenor.com/yLZ5G0Vq2cUAAAAC/ronaldo-cry.gif";
+
+  document.getElementById("msg2").innerHTML =
+  "ronaldo sedih weh 😭 pls tekan accept balik...";
+}
+
+/* hearts */
+function createHeart(){
+  let h=document.createElement("div");
+  h.classList.add("heart");
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.
