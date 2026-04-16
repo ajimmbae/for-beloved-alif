@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>...</title>
+<title>for you</title>
 <style>
 body{
   margin:0;
@@ -9,169 +9,98 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
+  background:#ffe6eb;
   font-family:sans-serif;
   overflow:hidden;
-  text-align:center;
-  background: radial-gradient(circle, #ffe6eb, #fff);
-  transition:1s;
 }
 
-h1,h2{
-  padding:0 20px;
-}
-
-button{
-  padding:12px 22px;
-  border:none;
-  border-radius:25px;
-  background:pink;
+/* envelope */
+#envelope{
+  font-size:80px;
   cursor:pointer;
+  animation:shake 2s infinite;
+  text-align:center;
+}
+
+@keyframes shake{
+  0%{transform:rotate(0deg);}
+  25%{transform:rotate(2deg);}
+  50%{transform:rotate(-2deg);}
+  75%{transform:rotate(2deg);}
+  100%{transform:rotate(0deg);}
+}
+
+/* paper */
+#paper{
+  display:none;
+  position:absolute;
+  width:80%;
+  max-width:400px;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  animation:pop 0.8s forwards;
+}
+
+@keyframes pop{
+  from{transform:scale(0.3);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+img{
+  width:120px;
   margin:10px;
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.1);
-}
-
-.hidden{display:none;}
-
-.heart,.sparkle,.glow{
-  position:absolute;
-  pointer-events:none;
-}
-
-.heart{
-  color:pink;
-  animation:fall 4s linear infinite;
-}
-
-.sparkle{
-  color:white;
-  animation:float 3s linear infinite;
-}
-
-.glow{
-  width:6px;height:6px;
-  background:pink;
-  border-radius:50%;
-  animation:glow 2s infinite;
-}
-
-@keyframes fall{
-  0%{transform:translateY(-10vh);opacity:1;}
-  100%{transform:translateY(110vh);opacity:0;}
-}
-
-@keyframes float{
-  0%{transform:translateY(100vh);opacity:0;}
-  50%{opacity:1;}
-  100%{transform:translateY(-10vh);opacity:0;}
-}
-
-@keyframes glow{
-  0%{transform:scale(1);opacity:1;}
-  100%{transform:scale(3);opacity:0;}
-}
-
-#noBtn{
-  position:absolute;
 }
 </style>
 </head>
 
 <body>
 
-<h2 id="text"></h2>
+<div id="envelope" onclick="openLetter()">
+📩<br>
+<button>open</button>
+</div>
 
-<button onclick="next()">tap</button>
+<div id="paper">
+  <img src="https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif">
+  <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
 
-<div id="choice" class="hidden">
-  <button onclick="forgive()">forgive me</button>
-  <button id="noBtn" onmouseover="runAway()">ignore</button>
+  <h3 id="text"></h3>
 </div>
 
 <script>
-let step=0;
-
-let msg=[
-"click this",
-"i'm sorry...",
-"i really messed up",
-"i miss you more than you think",
-"please don't leave me"
-];
-
-function typeText(t){
-  let i=0;
-  document.getElementById("text").innerHTML="";
-  let typing=setInterval(()=>{
-    document.getElementById("text").innerHTML+=t[i];
-    i++;
-    if(i>=t.length)clearInterval(typing);
-  },40);
+function openLetter(){
+  document.getElementById("envelope").style.display="none";
+  document.getElementById("paper").style.display="block";
+  typeWriter();
 }
 
-typeText(msg[0]);
+let msg = ` for my baby , Aliff 
+hi sayanggggg , bf u ni :3 !
+i belajar coding tauu untuk baby hehehe .
+bukan senangg tauu :< .
+okayylahh tu jee , i just nak you tau yang link ni ajim you yang buatt mwhahah !
+sorry okayy kalau tak lawa macam orang lainn .
+i baru belajar hehee .
+okaylahh pape tekan bawah .
+byeeee`;
 
-function next(){
-  step++;
+let i=0;
+function typeWriter(){
+  let text = document.getElementById("text");
+  let speed = 40;
 
-  if(step<msg.length){
-    typeText(msg[step]);
+  function typing(){
+    if(i < msg.length){
+      text.innerHTML += msg.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    }
   }
-
-  if(step==msg.length-1){
-    document.getElementById("choice").classList.remove("hidden");
-    document.body.style.background="radial-gradient(circle,#ffd6de,#fff)";
-  }
+  typing();
 }
-
-function forgive(){
-  document.body.innerHTML=`
-  <h1>thank you...</h1>
-  <h2>i promise i’ll do better</h2>
-  `;
-  document.body.style.background="radial-gradient(circle,#d4ffd9,#fff)";
-}
-
-function runAway(){
-  let btn=document.getElementById("noBtn");
-  btn.style.left=Math.random()*window.innerWidth+"px";
-  btn.style.top=Math.random()*window.innerHeight+"px";
-}
-
-/* hearts */
-setInterval(()=>{
-  let h=document.createElement("div");
-  h.classList.add("heart");
-  h.innerHTML="❤";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=(10+Math.random()*25)+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),4000);
-},200);
-
-/* sparkles */
-setInterval(()=>{
-  let s=document.createElement("div");
-  s.classList.add("sparkle");
-  s.innerHTML="✦";
-  s.style.left=Math.random()*100+"vw";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),3000);
-},150);
-
-/* glow particles */
-setInterval(()=>{
-  let g=document.createElement("div");
-  g.classList.add("glow");
-  g.style.left=Math.random()*100+"vw";
-  g.style.top=Math.random()*100+"vh";
-  document.body.appendChild(g);
-  setTimeout(()=>g.remove(),2000);
-},300);
 </script>
 
 </body>
