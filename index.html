@@ -10,31 +10,29 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
   font-family:sans-serif;
   background:#ffe6eb;
   overflow:hidden;
   text-align:center;
 }
 
-/* FULL CLICK ENVELOPE */
+/* ENVELOPE */
 #envelope{
   position:fixed;
   inset:0;
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
   cursor:pointer;
   user-select:none;
-  background:#ffe6eb;
 }
 
 #envelope span{
   font-size:80px;
 }
 
-/* PAPER */
+/* PAPER + PAGE2 */
 #paper, #page2{
   display:none;
   width:85%;
@@ -43,23 +41,9 @@ body{
   padding:20px;
   border-radius:15px;
   box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  position:relative;
 }
 
-/* HEARTS */
-.heart{
-  position:absolute;
-  color:pink;
-  animation:fall 4s linear infinite;
-  pointer-events:none;
-}
-
-@keyframes fall{
-  0%{transform:translateY(-10vh);opacity:1;}
-  100%{transform:translateY(110vh);opacity:0;}
-}
-
-/* BUTTONS */
+/* BUTTON */
 button{
   padding:12px 20px;
   border:none;
@@ -75,22 +59,56 @@ button{
   border-radius:50%;
 }
 
+/* HEARTS */
+.heart{
+  position:absolute;
+  color:pink;
+  animation:fall 4s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes fall{
+  0%{transform:translateY(-10vh);opacity:1;}
+  100%{transform:translateY(110vh);opacity:0;}
+}
+
 /* RONALDO */
 #ronaldo{
   position:fixed;
-  top:-200px;
-  left:50%;
-  transform:translateX(-50%);
+  left:-200px;
+  top:25%;
   width:180px;
+  transition:0.3s;
   z-index:999;
+}
+
+#ball{
+  position:fixed;
+  left:-100px;
+  top:45%;
+  width:80px;
+  z-index:998;
   transition:0.4s;
+}
+
+/* SHAKE */
+.shake{
+  animation:shake 0.15s infinite;
+}
+
+@keyframes shake{
+  0%{transform:translate(0,0);}
+  25%{transform:translate(3px,-3px);}
+  50%{transform:translate(-3px,3px);}
+  75%{transform:translate(3px,3px);}
+  100%{transform:translate(0,0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ENVELOPE (FULL SCREEN CLICK SAFE) -->
+<!-- ENVELOPE -->
 <div id="envelope" onclick="openLetter()">
   <span>📩</span>
   <p>tap anywhere</p>
@@ -100,16 +118,19 @@ button{
 <div id="paper">
   <h3>For my baby . Alif Rayyan ~ 💗</h3>
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" width="140" style="border-radius:10px;">
-
   <h3 id="text"></h3>
 
   <button onclick="goPage2()">continue</button>
 </div>
 
-<!-- RONALDO -->
-<img id="ronaldo"
-src="https://media.tenor.com/jH0V4V6y9fQAAAAC/ronaldo-siu.gif">
+<!-- RONALDO + BALL -->
+<img id="ronaldo" src="https://media.tenor.com/jH0V4V6y9fQAAAAC/ronaldo-siu.gif">
+<img id="ball" src="https://media.tenor.com/3Q1VxZy0Z2QAAAAC/football-ball.gif">
+
+<!-- AUDIO (optional) -->
+<audio id="sui">
+  <source src="https://www.myinstants.com/media/sounds/siiuuu.mp3" type="audio/mpeg">
+</audio>
 
 <!-- STEP 2 -->
 <div id="page2">
@@ -157,18 +178,34 @@ function goPage2(){
   document.getElementById("page2").style.display="block";
 
   let r=document.getElementById("ronaldo");
-  r.style.top="20px";
+  let b=document.getElementById("ball");
+  let s=document.getElementById("sui");
 
-  setTimeout(()=>r.style.top="-200px",1500);
+  r.style.left="-200px";
+  b.style.left="-100px";
+
+  setTimeout(()=>{
+    r.style.left="30%";
+  },200);
+
+  setTimeout(()=>{
+    b.style.left="120%";
+    document.body.classList.add("shake");
+    s.play();
+  },700);
+
+  setTimeout(()=>{
+    document.body.classList.remove("shake");
+  },1200);
 
   document.getElementById("msg2").innerHTML=
-  "i minta maaf yee sayangg , i dah taknak buat dahh . i promise hati ke hati okayy :3 <br><br> you maafkan i tak ?";
+  "i minta maaf sayang 😭<br><br>you maafkan i tak?";
 }
 
 function accept(){
   document.getElementById("page2").innerHTML=`
     <h1>thank you ❤️</h1>
-    <p>i'll do better for you</p>
+    <p>i promise i’ll be better for you</p>
   `;
 }
 
@@ -176,14 +213,19 @@ function runAway(){
   let btn=document.getElementById("ignoreBtn");
 
   btn.style.position="absolute";
-  btn.style.left=Math.random()*70+"vw";
+  btn.style.left=Math.random()*80+"vw";
   btn.style.top=Math.random()*60+"vh";
-
-  document.getElementById("ronaldo").src=
-  "https://media.tenor.com/yLZ5G0Vq2cUAAAAC/ronaldo-cry.gif";
+  let r=document.getElementById("ronaldo");
+  r.src="https://media.tenor.com/yLZ5G0Vq2cUAAAAC/ronaldo-cry.gif";
 
   document.getElementById("msg2").innerHTML=
-  "ronaldo sedih 😭 pls tekan accept...";
+  "ronaldo sedih 😭 pls jangan ignore...";
+
+  document.body.classList.add("shake");
+
+  setTimeout(()=>{
+    document.body.classList.remove("shake");
+  },800);
 }
 
 /* hearts */
@@ -194,7 +236,6 @@ function createHeart(){
   h.style.left=Math.random()*100+"vw";
   h.style.fontSize=(10+Math.random()*20)+"px";
   document.body.appendChild(h);
-
   setTimeout(()=>h.remove(),4000);
 }
 
