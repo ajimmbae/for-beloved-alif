@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 <title>for you</title>
@@ -16,7 +16,6 @@ body{
   text-align:center;
 }
 
-/* ENVELOPE */
 #envelope{
   position:fixed;
   inset:0;
@@ -25,14 +24,8 @@ body{
   justify-content:center;
   align-items:center;
   cursor:pointer;
-  user-select:none;
 }
 
-#envelope span{
-  font-size:80px;
-}
-
-/* PAPER + PAGE2 */
 #paper, #page2{
   display:none;
   width:85%;
@@ -43,23 +36,23 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
+/* GIF */
+img{
+  width:140px;
+  margin:10px;
+}
+
 /* BUTTON */
 button{
-  padding:12px 20px;
+  padding:12px 18px;
   border:none;
   border-radius:20px;
   background:pink;
   cursor:pointer;
-  margin-top:10px;
+  margin:8px;
 }
 
-.ballBtn{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-}
-
-/* HEARTS */
+/* HEART */
 .heart{
   position:absolute;
   color:pink;
@@ -75,8 +68,8 @@ button{
 /* RONALDO */
 #ronaldo{
   position:fixed;
+  top:20%;
   left:-200px;
-  top:25%;
   width:180px;
   transition:0.3s;
   z-index:999;
@@ -84,8 +77,8 @@ button{
 
 #ball{
   position:fixed;
-  left:-100px;
   top:45%;
+  left:-100px;
   width:80px;
   z-index:998;
   transition:0.4s;
@@ -110,7 +103,7 @@ button{
 
 <!-- ENVELOPE -->
 <div id="envelope" onclick="openLetter()">
-  <span>📩</span>
+  <span style="font-size:80px;">📩</span>
   <p>tap anywhere</p>
 </div>
 
@@ -118,26 +111,26 @@ button{
 <div id="paper">
   <h3>For my baby . Alif Rayyan ~ 💗</h3>
 
+  <img src="https://media.tenor.com/l0HlQ7LRalQAAAAC/cute-bear.gif">
+
   <h3 id="text"></h3>
 
   <button onclick="goPage2()">continue</button>
 </div>
 
-<!-- RONALDO + BALL -->
-<img id="ronaldo" src="https://media.tenor.com/jH0V4V6y9fQAAAAC/ronaldo-siu.gif">
-<img id="ball" src="https://media.tenor.com/3Q1VxZy0Z2QAAAAC/football-ball.gif">
+<!-- RONALDO -->
+<img id="ronaldo"
+src="https://media.tenor.com/jH0V4V6y9fQAAAAC/ronaldo-siu.gif">
 
-<!-- AUDIO (optional) -->
-<audio id="sui">
-  <source src="https://www.myinstants.com/media/sounds/siiuuu.mp3" type="audio/mpeg">
-</audio>
+<img id="ball"
+src="https://media.tenor.com/3Q1VxZy0Z2QAAAAC/football-ball.gif">
 
 <!-- STEP 2 -->
 <div id="page2">
   <h2 id="msg2"></h2>
 
-  <button class="ballBtn" onclick="accept()">ACCEPT ⚽</button>
-  <button class="ballBtn" id="ignoreBtn" onmouseover="runAway()">IGNORE ⚽</button>
+  <button onclick="accept()">ACCEPT ⚽</button>
+  <button id="ignoreBtn" onmouseover="runAway()">IGNORE ⚽</button>
 </div>
 
 <script>
@@ -179,20 +172,13 @@ function goPage2(){
 
   let r=document.getElementById("ronaldo");
   let b=document.getElementById("ball");
-  let s=document.getElementById("sui");
 
-  r.style.left="-200px";
-  b.style.left="-100px";
-
-  setTimeout(()=>{
-    r.style.left="30%";
-  },200);
+  r.style.left="30%";
 
   setTimeout(()=>{
     b.style.left="120%";
     document.body.classList.add("shake");
-    s.play();
-  },700);
+  },600);
 
   setTimeout(()=>{
     document.body.classList.remove("shake");
@@ -205,7 +191,7 @@ function goPage2(){
 function accept(){
   document.getElementById("page2").innerHTML=`
     <h1>thank you ❤️</h1>
-    <p>i promise i’ll be better for you</p>
+    <p>i promise i’ll do better</p>
   `;
 }
 
@@ -215,20 +201,15 @@ function runAway(){
   btn.style.position="absolute";
   btn.style.left=Math.random()*80+"vw";
   btn.style.top=Math.random()*60+"vh";
+
   let r=document.getElementById("ronaldo");
   r.src="https://media.tenor.com/yLZ5G0Vq2cUAAAAC/ronaldo-cry.gif";
 
   document.getElementById("msg2").innerHTML=
   "ronaldo sedih 😭 pls jangan ignore...";
-
-  document.body.classList.add("shake");
-
-  setTimeout(()=>{
-    document.body.classList.remove("shake");
-  },800);
 }
 
-/* hearts */
+/* HEARTS */
 function createHeart(){
   let h=document.createElement("div");
   h.classList.add("heart");
