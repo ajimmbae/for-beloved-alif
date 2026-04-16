@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>for you</title>
+<style>
+body {
+  text-align:center;
+  background:#ffe6eb;
+  font-family:sans-serif;
+}
+button {
+  padding:10px 20px;
+  background:pink;
+  border:none;
+  cursor:pointer;
+}
+.hidden { display:none; }
+</style>
+</head>
+
+<body>
+
+<h2 id="p1">click this</h2>
+<button onclick="next(1)">tap</button>
+
+<h2 id="p2" class="hidden">i'm sorry :(</h2>
+<button id="b2" class="hidden" onclick="next(2)">next</button>
+
+<h2 id="p3" class="hidden">
+i miss you… please forgive me :(
+</h2>
+
+<script>
+function next(x){
+document.getElementById("p"+x).classList.add("hidden");
+document.getElementById("p"+(x+1)).classList.remove("hidden");
+if(x==1) document.getElementById("b2").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
