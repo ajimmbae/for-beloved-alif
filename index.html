@@ -1,41 +1,177 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>for you</title>
+<title>...</title>
 <style>
-body {
-  text-align:center;
-  background:#ffe6eb;
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
   font-family:sans-serif;
+  overflow:hidden;
+  text-align:center;
+  background: radial-gradient(circle, #ffe6eb, #fff);
+  transition:1s;
 }
-button {
-  padding:10px 20px;
-  background:pink;
+
+h1,h2{
+  padding:0 20px;
+}
+
+button{
+  padding:12px 22px;
   border:none;
+  border-radius:25px;
+  background:pink;
   cursor:pointer;
+  margin:10px;
+  transition:0.3s;
 }
-.hidden { display:none; }
+
+button:hover{
+  transform:scale(1.1);
+}
+
+.hidden{display:none;}
+
+.heart,.sparkle,.glow{
+  position:absolute;
+  pointer-events:none;
+}
+
+.heart{
+  color:pink;
+  animation:fall 4s linear infinite;
+}
+
+.sparkle{
+  color:white;
+  animation:float 3s linear infinite;
+}
+
+.glow{
+  width:6px;height:6px;
+  background:pink;
+  border-radius:50%;
+  animation:glow 2s infinite;
+}
+
+@keyframes fall{
+  0%{transform:translateY(-10vh);opacity:1;}
+  100%{transform:translateY(110vh);opacity:0;}
+}
+
+@keyframes float{
+  0%{transform:translateY(100vh);opacity:0;}
+  50%{opacity:1;}
+  100%{transform:translateY(-10vh);opacity:0;}
+}
+
+@keyframes glow{
+  0%{transform:scale(1);opacity:1;}
+  100%{transform:scale(3);opacity:0;}
+}
+
+#noBtn{
+  position:absolute;
+}
 </style>
 </head>
 
 <body>
 
-<h2 id="p1">click this</h2>
-<button onclick="next(1)">tap</button>
+<h2 id="text"></h2>
 
-<h2 id="p2" class="hidden">i'm sorry :(</h2>
-<button id="b2" class="hidden" onclick="next(2)">next</button>
+<button onclick="next()">tap</button>
 
-<h2 id="p3" class="hidden">
-i miss you… please forgive me :(
-</h2>
+<div id="choice" class="hidden">
+  <button onclick="forgive()">forgive me</button>
+  <button id="noBtn" onmouseover="runAway()">ignore</button>
+</div>
 
 <script>
-function next(x){
-document.getElementById("p"+x).classList.add("hidden");
-document.getElementById("p"+(x+1)).classList.remove("hidden");
-if(x==1) document.getElementById("b2").classList.remove("hidden");
+let step=0;
+
+let msg=[
+"click this",
+"i'm sorry...",
+"i really messed up",
+"i miss you more than you think",
+"please don't leave me"
+];
+
+function typeText(t){
+  let i=0;
+  document.getElementById("text").innerHTML="";
+  let typing=setInterval(()=>{
+    document.getElementById("text").innerHTML+=t[i];
+    i++;
+    if(i>=t.length)clearInterval(typing);
+  },40);
 }
+
+typeText(msg[0]);
+
+function next(){
+  step++;
+
+  if(step<msg.length){
+    typeText(msg[step]);
+  }
+
+  if(step==msg.length-1){
+    document.getElementById("choice").classList.remove("hidden");
+    document.body.style.background="radial-gradient(circle,#ffd6de,#fff)";
+  }
+}
+
+function forgive(){
+  document.body.innerHTML=`
+  <h1>thank you...</h1>
+  <h2>i promise i’ll do better</h2>
+  `;
+  document.body.style.background="radial-gradient(circle,#d4ffd9,#fff)";
+}
+
+function runAway(){
+  let btn=document.getElementById("noBtn");
+  btn.style.left=Math.random()*window.innerWidth+"px";
+  btn.style.top=Math.random()*window.innerHeight+"px";
+}
+
+/* hearts */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.classList.add("heart");
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(10+Math.random()*25)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+},200);
+
+/* sparkles */
+setInterval(()=>{
+  let s=document.createElement("div");
+  s.classList.add("sparkle");
+  s.innerHTML="✦";
+  s.style.left=Math.random()*100+"vw";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),3000);
+},150);
+
+/* glow particles */
+setInterval(()=>{
+  let g=document.createElement("div");
+  g.classList.add("glow");
+  g.style.left=Math.random()*100+"vw";
+  g.style.top=Math.random()*100+"vh";
+  document.body.appendChild(g);
+  setTimeout(()=>g.remove(),2000);
+},300);
 </script>
 
 </body>
